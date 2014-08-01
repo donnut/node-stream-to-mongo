@@ -23,6 +23,9 @@ StreamToMongo.prototype._write = function (obj, encoding, done) {
       self.db = db;
       self.collection = db.collection(self.options.collection);
       self.collection.insert(obj, { w: 1 }, done);
+      self.on('finish', function() {
+        self.db.close();
+      });
     });
   } else {
     self.collection.insert(obj, { w: 1 }, done);
